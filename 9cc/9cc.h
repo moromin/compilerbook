@@ -10,6 +10,7 @@
  **************/
 typedef enum {
 	TK_RESERVED,
+	TK_IDENT,
 	TK_NUM,
 	TK_EOF,
 } TokenKind;
@@ -39,26 +40,31 @@ extern Token *token; // Current token
  * parse.c *
  ***********/
 typedef enum {
-	ND_ADD, // +
-	ND_SUB, // -
-	ND_MUL, // *
-	ND_DIV, // /
-	ND_NUM, // Integer
-	ND_EQ,  // ==
-	ND_NE,  // !=
-	ND_LT,  // <
-	ND_LE,  // <=
+	ND_ADD,    // +
+	ND_SUB,    // -
+	ND_MUL,    // *
+	ND_DIV,    // /
+	ND_ASSIGN, // =
+	ND_LVAR,   // Local variable
+	ND_NUM,    // Integer
+	ND_EQ,     // ==
+	ND_NE,     // !=
+	ND_LT,     // <
+	ND_LE,     // <=
 } NodeKind;
 
 typedef struct Node Node;
 struct Node {
 	NodeKind kind;
+	Node *next;
 	Node *lhs;
 	Node *rhs;
 	int val;
 };
 
-Node *expr();
+Node *program();
+
+extern Node *code[100];
 
 /*************
  * codegen.c *

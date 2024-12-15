@@ -57,10 +57,10 @@ void codegen(Node *node) {
 	printf("main:\n");
 
 	// Generate code while going down AST
-	gen(node);
+	for (Node *n = node; n; n = n->next) {
+		gen(n);
+		printf("	pop rax\n");
+	}
 
-	// The total value must be in the stack top (RSP)
-	// Load the value to RAX and return it
-	printf("	pop rax\n");
 	printf("	ret\n");
 }

@@ -92,11 +92,19 @@ Token *tokenize() {
 		}
 
 		// Punctuator
-		if (strchr("+-*/()<>", *p)) {
+		if (strchr("+-*/()<>;", *p)) {
 			cur = new_token(TK_RESERVED, cur, p++, 1);
 			continue;
 		}
 
+		// // Identifier
+		// if ('a' <= *p && *p <= 'z') {
+		// 	cur = new_token(TK_IDENT, cur, p++, 0);
+		// 	cur->len = 1;
+		// 	continue;
+		// }
+
+		// Integer literal
 		if (isdigit(*p)) {
 			cur = new_token(TK_NUM, cur, p, 0);
 			char *q = p;
