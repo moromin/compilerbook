@@ -40,17 +40,18 @@ extern Token *token; // Current token
  * parse.c *
  ***********/
 typedef enum {
-	ND_ADD,    // +
-	ND_SUB,    // -
-	ND_MUL,    // *
-	ND_DIV,    // /
-	ND_EQ,     // ==
-	ND_NE,     // !=
-	ND_LT,     // <
-	ND_LE,     // <=
-	ND_RETURN, // "return"
-	ND_LVAR,   // Local variable
-	ND_NUM,    // Integer
+	ND_ADD,       // +
+	ND_SUB,       // -
+	ND_MUL,       // *
+	ND_DIV,       // /
+	ND_EQ,        // ==
+	ND_NE,        // !=
+	ND_LT,        // <
+	ND_LE,        // <=
+	ND_RETURN,    // "return"
+	ND_EXPR_STMT, // Expression statement
+	ND_LVAR,      // Local variable
+	ND_NUM,       // Integer
 } NodeKind;
 
 typedef struct Node Node;
