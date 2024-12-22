@@ -8,6 +8,7 @@
 /**************
  * tokenize.c *
  **************/
+// Token
 typedef enum {
 	TK_RESERVED,
 	TK_IDENT,
@@ -26,6 +27,7 @@ struct Token {
 
 void error(char *fmt, ...);
 void error_at(char *loc, char *fmt, ...);
+char *strndup(char *p, int len);
 bool consume(char *op);
 Token *consume_ident();
 void expect(char *op);
@@ -52,25 +54,38 @@ typedef enum {
 	ND_ASSIGN,    // =
 	ND_RETURN,    // "return"
 	ND_EXPR_STMT, // Expression statement
-	ND_LVAR,      // Local variable
+	ND_VAR,      // Local variable
 	ND_NUM,       // Integer
 } NodeKind;
 
+// Local variable
+typedef struct Var Var;
+struct Var {
+	Var *next;
+	char *name;
+	int offset; // Offset from RBP
+};
+
+// AST node
 typedef struct Node Node;
 struct Node {
 	NodeKind kind;
 	Node *next;
 	Node *lhs;
 	Node *rhs;
-	char name; // Used for ND_LVAR
+	Var *var;  // Used for ND_VAR
 	int val;   // Used for ND_NUM
 };
 
-Node *program();
+typedef struct {
+	Node *node;
+	Var *locals;
+	int stack_size;
+} Program;
 
-extern Node *code[100];
+Program *program();
 
 /*************
  * codegen.c *
  *************/
-void codegen(Node *node);
+void codegen(Program *program);
