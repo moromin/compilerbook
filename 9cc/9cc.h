@@ -27,6 +27,7 @@ struct Token {
 void error(char *fmt, ...);
 void error_at(char *loc, char *fmt, ...);
 bool consume(char *op);
+Token *consume_ident();
 void expect(char *op);
 int expect_number();
 bool at_eof();
@@ -48,6 +49,7 @@ typedef enum {
 	ND_NE,        // !=
 	ND_LT,        // <
 	ND_LE,        // <=
+	ND_ASSIGN,    // =
 	ND_RETURN,    // "return"
 	ND_EXPR_STMT, // Expression statement
 	ND_LVAR,      // Local variable
@@ -60,7 +62,8 @@ struct Node {
 	Node *next;
 	Node *lhs;
 	Node *rhs;
-	int val;
+	char name; // Used for ND_LVAR
+	int val;   // Used for ND_NUM
 };
 
 Node *program();
