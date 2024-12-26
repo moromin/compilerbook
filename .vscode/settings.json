@@ -1,0 +1,18 @@
+{
+	"files.associations": {
+		"*.hpp": "cpp",
+		"__config": "cpp",
+		"__locale": "cpp",
+		"cstdlib": "cpp",
+		"memory_resource": "cpp",
+		"locale": "cpp",
+		"ostream": "cpp",
+		"system_error": "cpp",
+		"typeinfo": "cpp",
+		"version": "cpp",
+		"*.tcc": "cpp",
+		"numeric": "cpp",
+		"istream": "cpp",
+		"*.inc": "cpp"
+	}
+}

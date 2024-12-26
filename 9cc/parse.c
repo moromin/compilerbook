@@ -280,17 +280,19 @@ Node *mul() {
 	}
 }
 
-// unary = ("+" | "-")? unary
+// unary = ("+" | "-" | "&" | "*")? unary
 //         | primary
 Node *unary() {
 	Token *tok;
 
-	if (consume("+")) {
+	if (consume("+"))
 		return unary();
-	}
-	if (tok = consume("-")) {
+	if (tok = consume("-"))
 		return new_binary(ND_SUB, new_num(0, tok), unary(), tok);
-	}
+	if (tok = consume("&"))
+		return new_unary(ND_ADDR, unary(), tok);
+	if (tok = consume("*"))
+		return new_unary(ND_DEREF, unary(), tok);
 	return primary();
 }
 
