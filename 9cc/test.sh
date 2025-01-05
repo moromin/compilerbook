@@ -98,10 +98,10 @@ assert 55 'main() { return fib(9); } fib(x) { if (x <= 1) return 1; return fib(x
 
 assert 3 'main() { x = 3; return *&x; }'
 assert 3 'main() { x = 3; y = &x; z = &y; return **z; }'
-assert 5 'main() { x = 3; y = 5; return *(&x + 8); }'  # locals: y -> x
-assert 3 'main() { x = 3; y = 5; return *(&y - 8); }'  # offset: y: 8 -> x: 16
+assert 5 'main() { x = 3; y = 5; return *(&x + 1); }'  # locals: y -> x
+assert 3 'main() { x = 3; y = 5; return *(&y - 1); }'  # offset: y: 8 -> x: 16
 assert 5 'main() { x = 3; y = &x; *y = 5; return x; }' # addr: y: 0x08 -> x: 0x00
-assert 7 'main() { x = 3; y = 5; *(&x + 8) = 7; return y; }'
-assert 7 'main() { x = 3; y = 5; *(&y - 8) = 7; return x; }'
+assert 7 'main() { x = 3; y = 5; *(&x + 1) = 7; return y; }'
+assert 7 'main() { x = 3; y = 5; *(&y - 1) = 7; return x; }'
 
 echo OK

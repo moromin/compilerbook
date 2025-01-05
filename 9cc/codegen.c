@@ -160,9 +160,13 @@ void gen(Node *node) {
 
 	switch (node->kind) {
 	case ND_ADD:
+		if (node->ty->kind == TY_PTR)
+			printf("	imul rdi, 8\n"); // support pointer operation: &x+8 -> &x+1
 		printf("	add rax, rdi\n");
 		break;
 	case ND_SUB:
+		if (node->ty->kind == TY_PTR)
+			printf("	imul rdi, 8\n");
 		printf("	sub rax, rdi\n");
 		break;
 	case ND_MUL:

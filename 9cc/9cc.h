@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+typedef struct Type Type;
+
 /**************
  * tokenize.c *
  **************/
@@ -85,6 +87,7 @@ typedef struct Node Node;
 struct Node {
 	NodeKind kind;
 	Node *next;
+	Type *ty;
 	Token *tok;
 
 	Node *lhs;
@@ -120,6 +123,21 @@ struct Function {
 };
 
 Function *program();
+
+/************
+ * typing.c *
+ ************/
+typedef enum {
+	TY_INT,
+	TY_PTR
+} TypeKind;
+
+struct Type {
+	TypeKind kind;
+	Type *base;
+};
+
+void add_type(Function *prog);
 
 /*************
  * codegen.c *
