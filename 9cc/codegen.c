@@ -36,7 +36,9 @@ void store() {
 }
 
 void gen(Node *node) {
-	switch (node->kind){
+	switch (node->kind) {
+	case ND_NULL:
+		return;
 	case ND_NUM:
 		printf("	push %d\n", node->val);
 		return;
@@ -217,7 +219,7 @@ void codegen(Function *prog) {
 
 		// Push arguments to the stack
 		int i = 0;
-		for (VarList* vl = fn->params; vl; vl = vl->next) {
+		for (VarList *vl = fn->params; vl; vl = vl->next) {
 			Var *var = vl->var;
 			printf("	mov [rbp-%d], %s\n", var->offset, argreg[i++]);
 		}

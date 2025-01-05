@@ -30,6 +30,7 @@ struct Token {
 void error(char *fmt, ...);
 void error_at(char *loc, char *fmt, ...);
 void error_tok(Token *tok, char *fmt, ...);
+Token *peek(char *s);
 Token *consume(char *op);
 char *strndup(char *p, int len);
 Token *consume_ident();
@@ -67,12 +68,14 @@ typedef enum {
 	ND_EXPR_STMT, // Expression statement
 	ND_VAR,       // Local variable
 	ND_NUM,       // Integer
+	ND_NULL,      // Empty statement
 } NodeKind;
 
 // Local variable
 typedef struct Var Var;
 struct Var {
-	char *name;
+	char *name; // Variable name
+	Type *ty;   // Type
 	int offset; // Offset from RBP
 };
 
@@ -136,6 +139,9 @@ struct Type {
 	TypeKind kind;
 	Type *base;
 };
+
+Type *int_type();
+Type *pointer_to(Type *base);
 
 void add_type(Function *prog);
 

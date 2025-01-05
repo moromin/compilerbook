@@ -31,44 +31,45 @@ void visit(Node *node) {
 		visit(n);
 
 	switch (node->kind) {
-		case ND_MUL:
-		case ND_DIV:
-		case ND_EQ:
-		case ND_NE:
-		case ND_LT:
-		case ND_LE:
-		case ND_VAR:
-		case ND_FUNCALL:
-		case ND_NUM:
-			node->ty = int_type();
-			return;
-		case ND_ADD:
-			if (node->rhs->ty->kind == TY_PTR) {
-				Node *tmp = node->lhs;
-				node->lhs = node->rhs;
-				node->rhs = tmp;
-			}
-			if (node->rhs->ty->kind == TY_PTR)
-				error_tok(node->tok, "invalid pointer arithmetic operands");
-			node->ty = node->lhs->ty;
-			return;
-		case ND_SUB:
-			if (node->rhs->ty->kind == TY_PTR)
-				error_tok(node->tok, "invalid pointer arithmetic operands");
-			node->ty = node->lhs->ty;
-			return;
-		case ND_ASSIGN:
-			node->ty = node->lhs->ty;
-			return;
-		case ND_ADDR:
-			node->ty = pointer_to(node->lhs->ty);
-			return;
-		case ND_DEREF:
-			if (node->lhs->ty->kind == TY_PTR)
-				node->ty = node->lhs->ty->base;
-			else
-				node->ty = int_type();
-			return;
+	case ND_MUL:
+	case ND_DIV:
+	case ND_EQ:
+	case ND_NE:
+	case ND_LT:
+	case ND_LE:
+	case ND_FUNCALL:
+	case ND_NUM:
+		node->ty = int_type();
+		return;
+	case ND_VAR:
+		node->ty = node->var->ty;
+		return;
+	case ND_ADD:
+		if (node->rhs->ty->kind == TY_PTR) {
+			Node *tmp = node->lhs;
+			node->lhs = node->rhs;
+			node->rhs = tmp;
+		}
+		if (node->rhs->ty->kind == TY_PTR)
+			error_tok(node->tok, "invalid pointer arithmetic operands");
+		node->ty = node->lhs->ty;
+		return;
+	case ND_SUB:
+		if (node->rhs->ty->kind == TY_PTR)
+			error_tok(node->tok, "invalid pointer arithmetic operands");
+		node->ty = node->lhs->ty;
+		return;
+	case ND_ASSIGN:
+		node->ty = node->lhs->ty;
+		return;
+	case ND_ADDR:
+		node->ty = pointer_to(node->lhs->ty);
+		return;
+	case ND_DEREF:
+		if (node->lhs->ty->kind != TY_PTR)
+			error_tok(node->tok, "invalid pointer dereference");
+		node->ty = node->lhs->ty->base;
+		return;
 	}
 }
 
