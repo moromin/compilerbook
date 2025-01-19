@@ -37,7 +37,7 @@ char *strndup(char *p, int len);
 Token *consume_ident();
 void expect(char *op);
 int expect_number();
-char* expect_ident();
+char *expect_ident();
 bool at_eof();
 Token *new_token(TokenKind kind, Token *cur, char *str, int len);
 Token *tokenize();
@@ -73,12 +73,15 @@ typedef enum {
 	ND_NULL,      // Empty statement
 } NodeKind;
 
-// Local variable
+// Variable
 typedef struct Var Var;
 struct Var {
-	char *name; // Variable name
-	Type *ty;   // Type
-	int offset; // Offset from RBP
+	char *name;    // Variable name
+	Type *ty;      // Type
+	bool is_local; // local or global
+
+	// Local variable
+	int offset;    // Offset from RBP
 };
 
 typedef struct VarList VarList;
@@ -127,7 +130,12 @@ struct Function {
 	int stack_size;
 };
 
-Function *program();
+typedef struct {
+	VarList *globals;
+	Function *fns;
+} Program;
+
+Program *program();
 
 /************
  * typing.c *
@@ -149,9 +157,9 @@ Type *pointer_to(Type *base);
 Type *array_of(Type *base, int size);
 int size_of(Type *ty);
 
-void add_type(Function *prog);
+void add_type(Program *prog);
 
 /*************
  * codegen.c *
  *************/
-void codegen(Function *program);
+void codegen(Program *prog);
