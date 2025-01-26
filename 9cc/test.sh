@@ -15,7 +15,7 @@ assert() {
 	expected="$1"
 	input="$2"
 
-	./9cc "$input" > tmp.s
+	./9cc <(echo "$input") > tmp.s
 	cc -o tmp tmp.s tmp2.o
 	./tmp
 	actual="$?"
@@ -28,6 +28,10 @@ assert() {
 	fi
 }
 
+# Failure cases
+# assert -1 'int main() { return ; }'
+
+# Success cases
 assert 0 'int main() { return 0; }'
 assert 42 'int main() { return 42; }'
 assert 21 'int main() { return 5+20-4; }'
