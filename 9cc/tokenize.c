@@ -38,7 +38,7 @@ void verror_at(char *loc, char *fmt, va_list ap) {
 
 	// Show the error message
 	int pos = loc - line + indent;
-	fprintf(stderr, "%s\n", user_input);
+	fprintf(stderr, "%s", user_input);
 	fprintf(stderr, "%*s", pos, ""); // print `pos` spaces
 	fprintf(stderr, "^ ");
 	vfprintf(stderr, fmt, ap);
@@ -218,6 +218,23 @@ Token *tokenize() {
 	while (*p) {
 		if (isspace(*p)) {
 			p++;
+			continue;
+		}
+
+		// Skip line comments
+		if (startswith(p, "//")) {
+			p += 2;
+			while (*p != '\n')
+				p++;
+			continue;
+		}
+
+		// Skip block comments
+		if (startswith(p, "/*")) {
+			char *q = strstr(p + 2, "*/");
+			if (!q)
+				error_at(p, "unclosed block comment");
+			p = q + 2;
 			continue;
 		}
 
